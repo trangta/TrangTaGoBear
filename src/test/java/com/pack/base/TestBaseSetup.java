@@ -2,13 +2,18 @@ package com.pack.base;
 
 import atu.testrecorder.ATUTestRecorder;
 import atu.testrecorder.exceptions.ATUTestRecorderException;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.remote.MobileBrowserType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,8 +24,12 @@ public class TestBaseSetup {
     private String browserType;
     private String appURL;
     ATUTestRecorder recorder;
+    private AndroidDriver androidDriver;
     public WebDriver getDriver() {
         return driver;
+    }
+    public AndroidDriver getAndroidDriver() {
+        return androidDriver;
     }
 
     protected void setDriver(String browserType, String appURL) {
@@ -31,13 +40,32 @@ public class TestBaseSetup {
             case "firefox":
                 driver = initFirefoxDriver(appURL);
                 break;
+            case "android":
+                try {
+                    androidDriver = initAndroid(appURL);
+                }catch (MalformedURLException  e)
+                {
+                    System.out.println ("error");
+                }
+                break;
             default:
                 System.out.println("browser : " + browserType
                         + " is invalid, Launching Firefox as browser of choice..");
                 driver = initChromeDriver(appURL);
         }
     }
-
+    public AndroidDriver initAndroid(String appURL) throws MalformedURLException {
+        String ACCESS_KEY = System.getenv("SEETEST_IO_ACCESS_KEY");
+        String CLOUD_URL = "https://cloud.seetest.io:443/wd/hub";
+        String TITLE = "Testing Website on Android Chrome with Java";
+        DesiredCapabilities dc = new DesiredCapabilities();
+        dc.setCapability("testName", TITLE);
+        dc.setCapability("accessKey", ACCESS_KEY);
+        dc.setBrowserName(MobileBrowserType.CHROME);
+        androidDriver = new AndroidDriver(new URL(CLOUD_URL), dc);
+        androidDriver.get(appURL);
+        return androidDriver;
+    }
     private static WebDriver initChromeDriver(String appURL) {
         System.out.println("Launching google chrome with new profile..");
         System.setProperty("webdriver.chrome.driver", driverPath
