@@ -1,7 +1,7 @@
 package com.pack.common.tests;
 
 import com.pack.base.TestBaseSetup;
-import come.pack.common.pageobjects.BasePage;
+import com.pack.common.pageobjects.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;

@@ -1,9 +1,9 @@
 package com.pack.common.tests;
 
 import com.pack.base.TestBaseSetup;
-import come.pack.common.pageobjects.BasePage;
-import come.pack.common.pageobjects.TravellingPage;
-import come.pack.common.pageobjects.TravellingResultPage;
+import com.pack.common.pageobjects.BasePage;
+import com.pack.common.pageobjects.TravellingPage;
+import com.pack.common.pageobjects.TravellingResultPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
